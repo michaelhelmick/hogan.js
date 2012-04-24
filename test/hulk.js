@@ -20,7 +20,7 @@ exec('node bin/hulk --wrapper amd test/templates/*', function (error, stdout, st
   var define = function (name, dep, template) {
     template = template(Hogan);
     assert(/list$/.test(name), 'name path ends in list');
-    assert(dep[0] === 'hogan.js', 'Make sure the "hogan" dependency is passed');
+    assert(dep[0] === 'hogan', 'Make sure the "hogan" dependency is passed');
     assert(typeof template   == 'object', 'defined a templates.list object');
     assert(typeof template.r == 'function', 'defined a templates.list.r function');
   };
