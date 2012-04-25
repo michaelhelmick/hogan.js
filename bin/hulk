@@ -107,11 +107,6 @@ function wrap(file, name, openedFile) {
   }
 }
 
-// write the directory
-if (options.outputdir) {
-  mkderp.sync(options.outputdir);
-}
-
 // write a template foreach file that matches template extension
 templates = extractFiles(options.argv.remain)
   .map(function (file) {
@@ -121,7 +116,16 @@ templates = extractFiles(options.argv.remain)
     openedFile = removeByteOrderMark(openedFile.trim());
     openedFile = wrap(file, name, openedFile);
     if (!options.outputdir) return openedFile;
-    fs.writeFileSync(path.join(options.outputdir, name + '.js'), openedFile);
+
+    var outputdir = options.outputdir;
+    // write the directory
+    if (outputdir) {
+      var t = hogan.compile(outputdir);
+      outputdir = t.render({current_dir: path.dirname(file)});
+      outputdir = path.normalize(outputdir);
+      mkderp.sync(outputdir);
+    }
+    fs.writeFileSync(path.join(outputdir, name + '.js'), openedFile);
   })
   .filter(function (t) {
     return t;
