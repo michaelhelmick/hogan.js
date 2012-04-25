@@ -112,7 +112,7 @@ templates = extractFiles(options.argv.remain)
   .map(function (file) {
     var openedFile = fs.readFileSync(file, 'utf-8'), name;
     if (!openedFile) return;
-    name = path.basename(file).replace(/\..*$/, '');
+    name = path.basename(file).replace(/\..[^\.]+$/, '');
     openedFile = removeByteOrderMark(openedFile.trim());
     openedFile = wrap(file, name, openedFile);
     if (!options.outputdir) return openedFile;
